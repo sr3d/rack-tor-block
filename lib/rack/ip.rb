@@ -17,12 +17,12 @@ module Rack
     end
     
     def is_tor? #Implements https://www.torproject.org/projects/tordnsel.html.en
-      Timeout.timeout(0.3)
+      Timeout.timeout(0.3) do
         Resolv.getaddress(tor_hostname) == TOR_POSITIVE_IP
       end
     rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH, Resolv::ResolvError => e
       false
-    rescue Timeout::Error
+    rescue Timeout::Error => e
       false
     end
     
